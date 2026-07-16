@@ -939,7 +939,7 @@ describe("toLineBufferEvent", () => {
   });
 
   it("maps DEL to backspace", () => {
-    expect(toLineBufferEvent("")).toEqual({ type: "backspace" });
+    expect(toLineBufferEvent("\x7f")).toEqual({ type: "backspace" });
   });
 
   it("maps a single printable character", () => {
@@ -947,7 +947,7 @@ describe("toLineBufferEvent", () => {
   });
 
   it("ignores control sequences such as arrow keys", () => {
-    expect(toLineBufferEvent("[A")).toBeNull();
+    expect(toLineBufferEvent("\x1b[A")).toBeNull();
   });
 });
 ```
@@ -987,7 +987,7 @@ export function reduceLineBuffer(buffer: string, event: LineBufferEvent): LineBu
 
 export function toLineBufferEvent(data: string): LineBufferEvent | null {
   if (data === "\r") return { type: "enter" };
-  if (data === "") return { type: "backspace" };
+  if (data === "\x7f") return { type: "backspace" };
   if (data.length === 1 && data >= " ") return { type: "printable", char: data };
   return null;
 }
