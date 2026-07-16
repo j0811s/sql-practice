@@ -18,7 +18,7 @@
 - ターミナルUI: `@xterm/xterm@6.0.0` + `@xterm/addon-fit@0.11.0`
 - バックエンド: `hono@4.12.30` + `@hono/node-server@2.0.10`、開発時は`tsx@4.23.1`でTS直接実行。Honoの「静的配信」役割はビルド済み`apps/web`を配信する本番デプロイ構成に属するため対象外とし、今回は問題APIのみ実装する（devでは`apps/web`はVite dev serverが直接配信する）
 - Lint/Format: `oxlint@1.74.0` / `oxfmt@0.59.0`（ワークスペース全体、ルート設定を単一の情報源とする）
-- テスト: `vitest@4.1.10`（ルート単一設定、Node環境、`{apps,packages}/*/src/**/*.test.ts`を横断実行）/ `@playwright/test@1.61.1`（`e2e/`配下）
+- テスト: `vitest@4.1.10`（ルート単一設定、Node環境、`{apps,packages}/*/**/*.test.ts`を横断実行。`packages/problems`のようにsrc/を持たないパッケージのテストも拾えるよう`src/`固定を外したグロブとする）/ `@playwright/test@1.61.1`（`e2e/`配下）
 - リポジトリ構成: `apps/{web,api}` + `packages/{shared,problems}` のpnpm workspacesモノレポ
 - 正誤判定・レビュー生成・XPロジック・問題データの拡充・本番デプロイ構成は対象外（`judge/`・`review/`・`xp/`はエントリポイントのみ用意）
 
@@ -181,7 +181,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: ["{apps,packages}/*/src/**/*.test.ts"],
+    include: ["{apps,packages}/*/**/*.test.ts"],
   },
 });
 ```
