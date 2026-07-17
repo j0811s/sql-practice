@@ -7,7 +7,9 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "dev": "pnpm --parallel --filter ./apps/* dev",
+    "build": "pnpm --filter @sql-practice/web build"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
