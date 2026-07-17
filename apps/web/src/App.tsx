@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { PGlite } from "@electric-sql/pglite";
 import { createDb, runQuery } from "./db/pglite";
 import type { TableResult } from "./db/queryResult";
@@ -29,16 +29,19 @@ function App() {
     };
   }, []);
 
-  async function handleSubmit(sql: string) {
-    if (!db || sql.trim() === "") return;
-    try {
-      setError(null);
-      setResult(await runQuery(db, sql));
-    } catch (err) {
-      setResult(null);
-      setError(err instanceof Error ? err.message : String(err));
-    }
-  }
+  const handleSubmit = useCallback(
+    async (sql: string) => {
+      if (!db || sql.trim() === "") return;
+      try {
+        setError(null);
+        setResult(await runQuery(db, sql));
+      } catch (err) {
+        setResult(null);
+        setError(err instanceof Error ? err.message : String(err));
+      }
+    },
+    [db],
+  );
 
   return (
     <main>
