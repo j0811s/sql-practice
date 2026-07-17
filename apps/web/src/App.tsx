@@ -47,7 +47,7 @@ function App() {
     <main>
       <h1>SQL Practice</h1>
       <p>usersテーブルにSELECT文を入力してEnterで実行してください。</p>
-      <TerminalView onSubmit={handleSubmit} />
+      {db ? <TerminalView onSubmit={handleSubmit} /> : <p>データベースを初期化しています…</p>}
       {error && <p role="alert">{error}</p>}
       {result && (
         <table data-testid="result-table">
