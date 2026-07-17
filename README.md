@@ -33,7 +33,7 @@ pnpm install
 ```
 apps/
   web/       React + Vite + xterm.js + PGlite
-  api/       Hono（静的配信 + 問題API）
+  api/       Hono（問題API。静的配信は将来の本番デプロイ対応で追加予定）
 packages/
   shared/    共有Problem型
   problems/  問題JSON（カテゴリ別）
