@@ -4,7 +4,6 @@
 
 設計の詳細は以下を参照:
 
-- `CLAUDE.md` — アプリ全体の設計書
 - `docs/superpowers/specs/2026-07-16-initial-setup-design.md` — 初期セットアップの設計書
 
 ## 前提条件
