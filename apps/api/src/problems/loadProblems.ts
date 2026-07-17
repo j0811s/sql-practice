@@ -3,8 +3,8 @@ import { join } from "node:path";
 import { parseProblem, type Problem } from "@sql-practice/shared";
 
 export function loadProblems(problemsDir: string): Problem[] {
-  const categories = readdirSync(problemsDir, { withFileTypes: true }).filter((entry) =>
-    entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules",
+  const categories = readdirSync(problemsDir, { withFileTypes: true }).filter(
+    (entry) => entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules",
   );
 
   const problems: Problem[] = [];

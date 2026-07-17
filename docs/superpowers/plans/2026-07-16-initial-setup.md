@@ -27,6 +27,7 @@
 ### Task 1: モノレポ基盤のセットアップ
 
 **Files:**
+
 - Create: `package.json`
 - Create: `pnpm-workspace.yaml`
 - Create: `tsconfig.base.json`
@@ -34,6 +35,7 @@
 - Create: `.gitignore`
 
 **Interfaces:**
+
 - Consumes: なし（最初のタスク）
 - Produces: ルート`package.json`のスクリプト置き場（後続タスクが`scripts`に追記していく）、全パッケージが`extends`する`tsconfig.base.json`
 
@@ -126,6 +128,7 @@ git commit -m "chore: set up pnpm workspaces monorepo skeleton"
 ### Task 2: packages/shared — Problem型とparseProblem
 
 **Files:**
+
 - Create: `packages/shared/package.json`
 - Create: `packages/shared/tsconfig.json`
 - Create: `packages/shared/src/types.ts`
@@ -136,6 +139,7 @@ git commit -m "chore: set up pnpm workspaces monorepo skeleton"
 - Modify: `package.json`（ルート、`devDependencies`と`test`スクリプトを追加）
 
 **Interfaces:**
+
 - Consumes: `tsconfig.base.json`（Task 1）
 - Produces: `Problem`型、`parseProblem(json: unknown): Problem`（不正な形なら`Error`を投げる）— Task 3・Task 4が使用
 
@@ -227,9 +231,7 @@ describe("parseProblem", () => {
   });
 
   it("throws when a required field has the wrong type", () => {
-    expect(() => parseProblem({ ...validProblem, id: "1" })).toThrow(
-      "Problem.id must be a number",
-    );
+    expect(() => parseProblem({ ...validProblem, id: "1" })).toThrow("Problem.id must be a number");
   });
 
   it("throws when given a non-object", () => {
@@ -321,12 +323,14 @@ git commit -m "feat: add shared Problem type and parseProblem validator"
 ### Task 3: packages/problems — 例題JSONの配置
 
 **Files:**
+
 - Create: `packages/problems/package.json`
 - Create: `packages/problems/tsconfig.json`
 - Create: `packages/problems/where/001.json`
 - Test: `packages/problems/where/001.test.ts`
 
 **Interfaces:**
+
 - Consumes: `@sql-practice/shared`の`parseProblem`（Task 2）
 - Produces: `packages/problems/where/001.json`（Task 4の`loadProblems`が読み込む実データ）
 
@@ -428,6 +432,7 @@ git commit -m "feat: add first seeded problem (WHERE 001)"
 ### Task 4: apps/api — Hono ヘルスチェック & 問題API
 
 **Files:**
+
 - Create: `apps/api/package.json`
 - Create: `apps/api/tsconfig.json`
 - Create: `apps/api/src/problems/loadProblems.ts`
@@ -439,6 +444,7 @@ git commit -m "feat: add first seeded problem (WHERE 001)"
 - Create: `apps/api/src/index.ts`
 
 **Interfaces:**
+
 - Consumes: `Problem`型・`parseProblem`（Task 2）、`packages/problems/where/001.json`（Task 3）
 - Produces: `export const app: Hono`（`apps/api/src/app.ts`）— サーバー起動（`index.ts`）とテストの両方から利用
 
@@ -646,6 +652,7 @@ git commit -m "feat: add Hono API with health check and problems endpoint"
 ### Task 5: apps/web — Vite + React + TypeScript scaffold
 
 **Files:**
+
 - Create: `apps/web/**`（`pnpm create vite`が生成）
 - Modify: `apps/web/package.json`
 - Modify: `apps/web/tsconfig.app.json`
@@ -655,6 +662,7 @@ git commit -m "feat: add Hono API with health check and problems endpoint"
 - Modify: `package.json`（ルート、`dev`/`build`スクリプト追加）
 
 **Interfaces:**
+
 - Consumes: `tsconfig.base.json`（Task 1）
 - Produces: `apps/web`アプリの雛形（Task 6・7がここに機能を追加していく）
 
@@ -748,6 +756,7 @@ git commit -m "feat: scaffold apps/web with Vite + React + TypeScript"
 ### Task 6: apps/web — PGlite によるSQL実行モジュール
 
 **Files:**
+
 - Modify: `apps/web/package.json`（`@electric-sql/pglite`追加）
 - Create: `apps/web/src/db/queryResult.ts`
 - Test: `apps/web/src/db/queryResult.test.ts`
@@ -755,6 +764,7 @@ git commit -m "feat: scaffold apps/web with Vite + React + TypeScript"
 - Test: `apps/web/src/db/pglite.test.ts`
 
 **Interfaces:**
+
 - Consumes: なし（PGliteパッケージのみ）
 - Produces: `createDb(): Promise<PGlite>`, `runQuery(db: PGlite, sql: string): Promise<TableResult>`, `TableResult { columns: string[]; rows: unknown[][] }` — Task 7の`App.tsx`が使用
 
@@ -886,6 +896,7 @@ git commit -m "feat: add PGlite-backed query execution module"
 ### Task 7: apps/web — xterm.js ターミナルUIと画面組み込み
 
 **Files:**
+
 - Modify: `apps/web/package.json`（`@xterm/xterm`, `@xterm/addon-fit`追加）
 - Create: `apps/web/src/terminal/lineBuffer.ts`
 - Test: `apps/web/src/terminal/lineBuffer.test.ts`
@@ -896,6 +907,7 @@ git commit -m "feat: add PGlite-backed query execution module"
 - Create: `apps/web/src/xp/index.ts`
 
 **Interfaces:**
+
 - Consumes: `createDb`/`runQuery`/`TableResult`（Task 6）
 - Produces: `TerminalView` コンポーネント（`onSubmit: (sql: string) => void` prop）。`judge`/`review`/`xp` は本タスクでは中身を実装しない空モジュール（後続タスクが実装する場所を確保するのみ）
 
@@ -961,9 +973,7 @@ Expected: FAIL — `Cannot find module './lineBuffer'`
 
 ```ts
 export type LineBufferEvent =
-  | { type: "printable"; char: string }
-  | { type: "backspace" }
-  | { type: "enter" };
+  { type: "printable"; char: string } | { type: "backspace" } | { type: "enter" };
 
 export interface LineBufferResult {
   buffer: string;
@@ -1101,9 +1111,7 @@ function App() {
       <h1>SQL Practice</h1>
       <p>usersテーブルにSELECT文を入力してEnterで実行してください。</p>
       <TerminalView onSubmit={handleSubmit} />
-      {error && (
-        <p role="alert">{error}</p>
-      )}
+      {error && <p role="alert">{error}</p>}
       {result && (
         <table data-testid="result-table">
           <thead>
@@ -1176,11 +1184,13 @@ git commit -m "feat: wire xterm.js terminal to PGlite execution and result displ
 ### Task 8: oxlint / oxfmt をルートに設定する
 
 **Files:**
+
 - Modify: `package.json`（ルート、devDependenciesと`lint`/`format`スクリプト追加）
 - Create: `.oxlintrc.json`
 - Create: `.oxfmtrc.json`
 
 **Interfaces:**
+
 - Consumes: なし
 - Produces: `pnpm lint` / `pnpm format`（リポジトリ全体に適用）
 
@@ -1248,11 +1258,13 @@ git commit -m "chore: configure oxlint and oxfmt at the workspace root"
 ### Task 9: Playwright E2E スモークテスト
 
 **Files:**
+
 - Modify: `package.json`（ルート、devDependenciesと`test:e2e`スクリプト追加）
 - Create: `playwright.config.ts`
 - Create: `e2e/sql-execution.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `apps/web`の起動済みdevサーバー（`http://localhost:5173`）
 - Produces: `pnpm test:e2e`
 
@@ -1334,9 +1346,11 @@ git commit -m "test: add Playwright smoke test for SQL execution flow"
 ### Task 10: README と最終疎通確認
 
 **Files:**
+
 - Create: `README.md`
 
 **Interfaces:**
+
 - Consumes: Task 1〜9で完成した全スクリプト（`dev`/`build`/`lint`/`format`/`test`/`test:e2e`）
 - Produces: 最終検証結果（このタスクに閉じる）
 
@@ -1348,6 +1362,7 @@ git commit -m "test: add Playwright smoke test for SQL execution flow"
 ブラウザ上でSQLを学習できるWebアプリ（初期セットアップ段階）。
 
 設計の詳細は以下を参照:
+
 - `CLAUDE.md` — アプリ全体の設計書
 - `docs/superpowers/specs/2026-07-16-initial-setup-design.md` — 初期セットアップの設計書
 
@@ -1364,25 +1379,25 @@ pnpm install
 
 ## スクリプト
 
-| コマンド | 内容 |
-|---|---|
-| `pnpm dev` | `apps/web`（Vite）と`apps/api`（Hono）を並行起動 |
-| `pnpm build` | `apps/web`を本番ビルド |
-| `pnpm lint` | oxlintでリポジトリ全体をチェック |
-| `pnpm format` | oxfmtでリポジトリ全体を整形 |
-| `pnpm test` | Vitestでユニットテストを実行 |
-| `pnpm test:e2e` | Playwrightでスモークテストを実行 |
+| コマンド        | 内容                                             |
+| --------------- | ------------------------------------------------ |
+| `pnpm dev`      | `apps/web`（Vite）と`apps/api`（Hono）を並行起動 |
+| `pnpm build`    | `apps/web`を本番ビルド                           |
+| `pnpm lint`     | oxlintでリポジトリ全体をチェック                 |
+| `pnpm format`   | oxfmtでリポジトリ全体を整形                      |
+| `pnpm test`     | Vitestでユニットテストを実行                     |
+| `pnpm test:e2e` | Playwrightでスモークテストを実行                 |
 
 ## 構成
 
 \`\`\`
 apps/
-  web/       React + Vite + xterm.js + PGlite
-  api/       Hono（静的配信 + 問題API）
+web/ React + Vite + xterm.js + PGlite
+api/ Hono（静的配信 + 問題API）
 packages/
-  shared/    共有Problem型
-  problems/  問題JSON（カテゴリ別）
-e2e/         Playwright テスト
+shared/ 共有Problem型
+problems/ 問題JSON（カテゴリ別）
+e2e/ Playwright テスト
 \`\`\`
 
 ## スコープ

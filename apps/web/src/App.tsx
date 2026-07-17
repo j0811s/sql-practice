@@ -48,9 +48,7 @@ function App() {
       <h1>SQL Practice</h1>
       <p>usersテーブルにSELECT文を入力してEnterで実行してください。</p>
       <TerminalView onSubmit={handleSubmit} />
-      {error && (
-        <p role="alert">{error}</p>
-      )}
+      {error && <p role="alert">{error}</p>}
       {result && (
         <table data-testid="result-table">
           <thead>

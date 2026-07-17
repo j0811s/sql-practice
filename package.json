@@ -2,18 +2,22 @@
   "name": "sql-practice",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.13.1",
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
     "test": "vitest run",
     "dev": "pnpm --parallel --filter ./apps/* dev",
-    "build": "pnpm --filter @sql-practice/web build"
+    "build": "pnpm --filter @sql-practice/web build",
+    "lint": "oxlint .",
+    "format": "oxfmt --write ."
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
+    "oxfmt": "0.59.0",
+    "oxlint": "1.74.0",
     "typescript": "~6.0.2",
     "vitest": "4.1.10"
-  }
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@11.13.1"
 }

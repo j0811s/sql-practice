@@ -26,9 +26,7 @@ describe("parseProblem", () => {
   });
 
   it("throws when a required field has the wrong type", () => {
-    expect(() => parseProblem({ ...validProblem, id: "1" })).toThrow(
-      "Problem.id must be a number",
-    );
+    expect(() => parseProblem({ ...validProblem, id: "1" })).toThrow("Problem.id must be a number");
   });
 
   it("throws when given a non-object", () => {

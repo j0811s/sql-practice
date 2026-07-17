@@ -45,10 +45,7 @@ describe("loadProblems", () => {
 
       // Create a hidden directory (should be skipped)
       mkdirSync(resolve(tmpDir, ".git"));
-      writeFileSync(
-        resolve(tmpDir, ".git", "invalid.json"),
-        JSON.stringify({ invalid: "data" }),
-      );
+      writeFileSync(resolve(tmpDir, ".git", "invalid.json"), JSON.stringify({ invalid: "data" }));
 
       // Load problems - should only find the 'where' category
       const problems = loadProblems(tmpDir);
