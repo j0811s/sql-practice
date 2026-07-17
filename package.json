@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
-    "dev": "pnpm --parallel --filter ./apps/* dev",
+    "dev": "pnpm --parallel --filter './apps/*' dev",
     "build": "pnpm --filter @sql-practice/web build",
     "lint": "oxlint .",
     "format": "oxfmt --write .",
