@@ -33,6 +33,7 @@ describe("loadProblems", () => {
           seed: [],
           expectedResult: [],
           hint: [],
+          orderMatters: false,
         }),
       );
 

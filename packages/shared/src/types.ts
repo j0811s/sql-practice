@@ -8,4 +8,5 @@ export interface Problem {
   seed: string[];
   expectedResult: Record<string, unknown>[];
   hint: string[];
+  orderMatters: boolean;
 }

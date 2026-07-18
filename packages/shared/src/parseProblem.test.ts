@@ -18,6 +18,7 @@ const validProblem = {
     { id: 3, name: "Carol", age: 35 },
   ],
   hint: ["WHERE句を使います。", "『以上』なので比較演算子を確認してみましょう。"],
+  orderMatters: false,
 };
 
 describe("parseProblem", () => {
@@ -27,6 +28,12 @@ describe("parseProblem", () => {
 
   it("throws when a required field has the wrong type", () => {
     expect(() => parseProblem({ ...validProblem, id: "1" })).toThrow("Problem.id must be a number");
+  });
+
+  it("throws when orderMatters has the wrong type", () => {
+    expect(() => parseProblem({ ...validProblem, orderMatters: "false" })).toThrow(
+      "Problem.orderMatters must be a boolean",
+    );
   });
 
   it("throws when given a non-object", () => {
