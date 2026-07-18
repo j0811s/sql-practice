@@ -48,6 +48,9 @@ importers:
       '@electric-sql/pglite':
         specifier: 0.5.4
         version: 0.5.4
+      '@sql-practice/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@xterm/addon-fit':
         specifier: 0.11.0
         version: 0.11.0
