@@ -77,6 +77,25 @@ describe("judge", () => {
     expect(judge(actual, problem)).toBe(true);
   });
 
+  it("returns true when row order matches and orderMatters is true", () => {
+    const actual: TableResult = {
+      columns: ["id", "name", "age"],
+      rows: [
+        [1, "Alice", 22],
+        [3, "Carol", 35],
+      ],
+    };
+    const problem = makeProblem({
+      expectedResult: [
+        { id: 1, name: "Alice", age: 22 },
+        { id: 3, name: "Carol", age: 35 },
+      ],
+      orderMatters: true,
+    });
+
+    expect(judge(actual, problem)).toBe(true);
+  });
+
   it("returns false when row order differs and orderMatters is true", () => {
     const actual: TableResult = {
       columns: ["id", "name", "age"],
