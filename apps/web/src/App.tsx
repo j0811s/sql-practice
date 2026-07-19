@@ -45,7 +45,11 @@ function App() {
       for (const statement of [...problem.schema, ...problem.seed]) {
         await instance.exec(statement);
       }
-      if (!cancelled) setDb(instance);
+      if (cancelled) {
+        void instance.close();
+        return;
+      }
+      setDb(instance);
     });
 
     return () => {
