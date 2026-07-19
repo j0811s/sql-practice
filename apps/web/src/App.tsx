@@ -4,6 +4,7 @@ import { problems } from "@sql-practice/problems";
 import { createDb, runQuery } from "./db/pglite";
 import type { TableResult } from "./db/queryResult";
 import { judge } from "./judge";
+import { generateReview } from "./review";
 import { TerminalView } from "./terminal/TerminalView";
 
 const problem = problems[0];
@@ -13,6 +14,7 @@ function App() {
   const [result, setResult] = useState<TableResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [correct, setCorrect] = useState<boolean | null>(null);
+  const [review, setReview] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -33,11 +35,14 @@ function App() {
       try {
         setError(null);
         const tableResult = await runQuery(db, sql);
+        const isCorrect = judge(tableResult, problem);
         setResult(tableResult);
-        setCorrect(judge(tableResult, problem));
+        setCorrect(isCorrect);
+        setReview(isCorrect ? null : generateReview(tableResult, problem));
       } catch (err) {
         setResult(null);
         setCorrect(null);
+        setReview(null);
         setError(err instanceof Error ? err.message : String(err));
       }
     },
@@ -55,6 +60,7 @@ function App() {
           {correct ? "○ 正解です！" : "× 不正解です。もう一度考えてみましょう"}
         </p>
       )}
+      {review && <p data-testid="review">{review}</p>}
       {result && (
         <table data-testid="result-table">
           <thead>

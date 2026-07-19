@@ -32,4 +32,7 @@ test("shows an incorrect verdict for a query that doesn't match the expected res
 
   const verdict = page.getByTestId("judge-result");
   await expect(verdict).toContainText("×");
+
+  const review = page.getByTestId("review");
+  await expect(review).toContainText("抽出条件が緩すぎるかもしれません");
 });
