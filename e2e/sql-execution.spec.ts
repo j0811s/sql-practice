@@ -28,6 +28,7 @@ test("shows an incorrect verdict for a query that doesn't match the expected res
 
   const table = page.getByTestId("result-table");
   await expect(table).toBeVisible();
+  await expect(table).toContainText("Bob");
 
   const verdict = page.getByTestId("judge-result");
   await expect(verdict).toContainText("×");
