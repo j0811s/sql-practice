@@ -6,8 +6,17 @@ import type { TableResult } from "./db/queryResult";
 import { judge } from "./judge";
 import { generateReview } from "./review";
 import { TerminalView } from "./terminal/TerminalView";
+import { calculateLevel, totalXp } from "./xp";
 
 const problem = problems[0];
+const COMPLETED_STORAGE_KEY = "sql-practice:completed-problems";
+
+function loadCompletedIds(): number[] {
+  const raw = localStorage.getItem(COMPLETED_STORAGE_KEY);
+  if (!raw) return [];
+  const parsed = JSON.parse(raw);
+  return Array.isArray(parsed) ? parsed : [];
+}
 
 function App() {
   const [db, setDb] = useState<PGlite | null>(null);
@@ -15,6 +24,11 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [correct, setCorrect] = useState<boolean | null>(null);
   const [review, setReview] = useState<string | null>(null);
+  const [completedIds, setCompletedIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    setCompletedIds(loadCompletedIds());
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -39,6 +53,15 @@ function App() {
         setResult(tableResult);
         setCorrect(isCorrect);
         setReview(isCorrect ? null : generateReview(tableResult, problem));
+
+        if (isCorrect) {
+          const current = loadCompletedIds();
+          if (!current.includes(problem.id)) {
+            const next = [...current, problem.id];
+            localStorage.setItem(COMPLETED_STORAGE_KEY, JSON.stringify(next));
+            setCompletedIds(next);
+          }
+        }
       } catch (err) {
         setResult(null);
         setCorrect(null);
@@ -49,9 +72,15 @@ function App() {
     [db],
   );
 
+  const xp = totalXp(completedIds, problems);
+  const level = calculateLevel(xp);
+
   return (
     <main>
       <h1>SQL Practice</h1>
+      <p data-testid="xp-status">
+        Lv.{level} ({xp} XP)
+      </p>
       <p>{problem.question}</p>
       {db ? <TerminalView onSubmit={handleSubmit} /> : <p>データベースを初期化しています…</p>}
       {error && <p role="alert">{error}</p>}

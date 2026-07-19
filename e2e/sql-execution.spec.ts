@@ -16,6 +16,9 @@ test("executes a SELECT query and shows matching rows", async ({ page }) => {
 
   const verdict = page.getByTestId("judge-result");
   await expect(verdict).toContainText("○");
+
+  const xpStatus = page.getByTestId("xp-status");
+  await expect(xpStatus).toContainText("Lv.1 (10 XP)");
 });
 
 test("shows an incorrect verdict for a query that doesn't match the expected result", async ({ page }) => {
