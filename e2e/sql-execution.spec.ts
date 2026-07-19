@@ -59,3 +59,14 @@ test("persists XP across a reload and does not double-count repeat correct answe
   await page.reload();
   await expect(page.getByTestId("xp-status")).toContainText("Lv.1 (10 XP)");
 });
+
+test("shows the problem list with the current problem selected", async ({ page }) => {
+  await page.goto("/");
+
+  const list = page.getByTestId("problem-list");
+  await expect(list).toBeVisible();
+
+  const item = page.getByTestId("problem-item-1");
+  await expect(item).toBeVisible();
+  await expect(item).toHaveAttribute("aria-current", "true");
+});

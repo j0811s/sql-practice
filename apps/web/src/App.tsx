@@ -4,11 +4,11 @@ import { problems } from "@sql-practice/problems";
 import { createDb, runQuery } from "./db/pglite";
 import type { TableResult } from "./db/queryResult";
 import { judge } from "./judge";
+import { ProblemList } from "./problem-list/ProblemList";
 import { generateReview } from "./review";
 import { TerminalView } from "./terminal/TerminalView";
 import { calculateLevel, totalXp } from "./xp";
 
-const problem = problems[0];
 const COMPLETED_STORAGE_KEY = "sql-practice:completed-problems";
 
 function loadCompletedIds(): number[] {
@@ -23,6 +23,7 @@ function loadCompletedIds(): number[] {
 }
 
 function App() {
+  const [selectedProblemId, setSelectedProblemId] = useState<number>(problems[0].id);
   const [db, setDb] = useState<PGlite | null>(null);
   const [result, setResult] = useState<TableResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -30,18 +31,34 @@ function App() {
   const [review, setReview] = useState<string | null>(null);
   const [completedIds, setCompletedIds] = useState<number[]>(loadCompletedIds);
 
+  const problem = problems.find((p) => p.id === selectedProblemId) ?? problems[0];
+
   useEffect(() => {
     let cancelled = false;
+    setDb(null);
+    setResult(null);
+    setError(null);
+    setCorrect(null);
+    setReview(null);
+
     void createDb().then(async (instance) => {
       for (const statement of [...problem.schema, ...problem.seed]) {
         await instance.exec(statement);
       }
       if (!cancelled) setDb(instance);
     });
+
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [problem]);
+
+  useEffect(() => {
+    if (!db) return;
+    return () => {
+      void db.close();
+    };
+  }, [db]);
 
   const handleSubmit = useCallback(
     async (sql: string) => {
@@ -69,7 +86,7 @@ function App() {
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [db],
+    [db, problem],
   );
 
   const xp = totalXp(completedIds, problems);
@@ -78,6 +95,12 @@ function App() {
   return (
     <main>
       <h1>SQL Practice</h1>
+      <ProblemList
+        problems={problems}
+        selectedId={selectedProblemId}
+        completedIds={completedIds}
+        onSelect={setSelectedProblemId}
+      />
       <p data-testid="xp-status">
         Lv.{level} ({xp} XP)
       </p>
