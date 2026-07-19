@@ -1,0 +1,22 @@
+{
+  "id": 2,
+  "title": "Engineering部署のユーザーを取得",
+  "difficulty": 1,
+  "category": "WHERE",
+  "question": "Engineeringの部署のユーザーを取得してください。",
+  "schema": ["CREATE TABLE users(id INTEGER,name TEXT,age INTEGER,dept TEXT);"],
+  "seed": [
+    "INSERT INTO users VALUES(1,'Alice',22,'Sales');",
+    "INSERT INTO users VALUES(2,'Bob',18,'Sales');",
+    "INSERT INTO users VALUES(3,'Carol',35,'Engineering');",
+    "INSERT INTO users VALUES(4,'Dave',28,'Engineering');",
+    "INSERT INTO users VALUES(5,'Eve',41,'Marketing');",
+    "INSERT INTO users VALUES(6,'Frank',19,'Marketing');"
+  ],
+  "expectedResult": [
+    { "id": 3, "name": "Carol", "age": 35, "dept": "Engineering" },
+    { "id": 4, "name": "Dave", "age": 28, "dept": "Engineering" }
+  ],
+  "hint": ["WHERE句で文字列を比較する際は引用符で囲みます。", "dept列の値を確認してみましょう。"],
+  "orderMatters": false
+}

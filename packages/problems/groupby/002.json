@@ -1,0 +1,23 @@
+{
+  "id": 7,
+  "title": "部署ごとの年齢合計を集計",
+  "difficulty": 3,
+  "category": "GROUPBY",
+  "question": "部署ごとの年齢合計を取得してください。",
+  "schema": ["CREATE TABLE users(id INTEGER,name TEXT,age INTEGER,dept TEXT);"],
+  "seed": [
+    "INSERT INTO users VALUES(1,'Alice',22,'Sales');",
+    "INSERT INTO users VALUES(2,'Bob',18,'Sales');",
+    "INSERT INTO users VALUES(3,'Carol',35,'Engineering');",
+    "INSERT INTO users VALUES(4,'Dave',28,'Engineering');",
+    "INSERT INTO users VALUES(5,'Eve',41,'Marketing');",
+    "INSERT INTO users VALUES(6,'Frank',19,'Marketing');"
+  ],
+  "expectedResult": [
+    { "dept": "Sales", "total_age": 40 },
+    { "dept": "Engineering", "total_age": 63 },
+    { "dept": "Marketing", "total_age": 60 }
+  ],
+  "hint": ["GROUP BY句を使います。", "合計を求めるにはSUM()を使います。"],
+  "orderMatters": false
+}
