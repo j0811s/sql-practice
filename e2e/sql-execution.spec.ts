@@ -13,4 +13,22 @@ test("executes a SELECT query and shows matching rows", async ({ page }) => {
   await expect(table).toContainText("Alice");
   await expect(table).toContainText("Carol");
   await expect(table).not.toContainText("Bob");
+
+  const verdict = page.getByTestId("judge-result");
+  await expect(verdict).toContainText("○");
+});
+
+test("shows an incorrect verdict for a query that doesn't match the expected result", async ({ page }) => {
+  await page.goto("/");
+
+  const terminal = page.locator(".xterm-helper-textarea");
+  await terminal.click();
+  await page.keyboard.type("SELECT id, name, age FROM users;");
+  await page.keyboard.press("Enter");
+
+  const table = page.getByTestId("result-table");
+  await expect(table).toBeVisible();
+
+  const verdict = page.getByTestId("judge-result");
+  await expect(verdict).toContainText("×");
 });

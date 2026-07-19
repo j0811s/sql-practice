@@ -48,6 +48,9 @@ importers:
       '@electric-sql/pglite':
         specifier: 0.5.4
         version: 0.5.4
+      '@sql-practice/problems':
+        specifier: workspace:*
+        version: link:../../packages/problems
       '@sql-practice/shared':
         specifier: workspace:*
         version: link:../../packages/shared

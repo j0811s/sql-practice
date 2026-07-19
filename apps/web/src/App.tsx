@@ -1,25 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
 import type { PGlite } from "@electric-sql/pglite";
+import { problems } from "@sql-practice/problems";
 import { createDb, runQuery } from "./db/pglite";
 import type { TableResult } from "./db/queryResult";
+import { judge } from "./judge";
 import { TerminalView } from "./terminal/TerminalView";
 
-const SEED_SQL = [
-  "CREATE TABLE users(id INTEGER,name TEXT,age INTEGER);",
-  "INSERT INTO users VALUES(1,'Alice',22);",
-  "INSERT INTO users VALUES(2,'Bob',18);",
-  "INSERT INTO users VALUES(3,'Carol',35);",
-];
+const problem = problems[0];
 
 function App() {
   const [db, setDb] = useState<PGlite | null>(null);
   const [result, setResult] = useState<TableResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [correct, setCorrect] = useState<boolean | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     void createDb().then(async (instance) => {
-      for (const statement of SEED_SQL) {
+      for (const statement of [...problem.schema, ...problem.seed]) {
         await instance.exec(statement);
       }
       if (!cancelled) setDb(instance);
@@ -34,9 +32,12 @@ function App() {
       if (!db || sql.trim() === "") return;
       try {
         setError(null);
-        setResult(await runQuery(db, sql));
+        const tableResult = await runQuery(db, sql);
+        setResult(tableResult);
+        setCorrect(judge(tableResult, problem));
       } catch (err) {
         setResult(null);
+        setCorrect(null);
         setError(err instanceof Error ? err.message : String(err));
       }
     },
@@ -46,9 +47,14 @@ function App() {
   return (
     <main>
       <h1>SQL Practice</h1>
-      <p>usersテーブルにSELECT文を入力してEnterで実行してください。</p>
+      <p>{problem.question}</p>
       {db ? <TerminalView onSubmit={handleSubmit} /> : <p>データベースを初期化しています…</p>}
       {error && <p role="alert">{error}</p>}
+      {correct !== null && (
+        <p data-testid="judge-result">
+          {correct ? "○ 正解です！" : "× 不正解です。もう一度考えてみましょう"}
+        </p>
+      )}
       {result && (
         <table data-testid="result-table">
           <thead>
