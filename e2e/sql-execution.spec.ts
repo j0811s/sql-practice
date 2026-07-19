@@ -39,3 +39,23 @@ test("shows an incorrect verdict for a query that doesn't match the expected res
   const review = page.getByTestId("review");
   await expect(review).toContainText("抽出条件が緩すぎるかもしれません");
 });
+
+test("persists XP across a reload and does not double-count repeat correct answers", async ({ page }) => {
+  await page.goto("/");
+
+  const terminal = page.locator(".xterm-helper-textarea");
+  await terminal.click();
+  await page.keyboard.type("SELECT id, name, age FROM users WHERE age >= 20;");
+  await page.keyboard.press("Enter");
+
+  const xpStatus = page.getByTestId("xp-status");
+  await expect(xpStatus).toContainText("Lv.1 (10 XP)");
+
+  await terminal.click();
+  await page.keyboard.type("SELECT id, name, age FROM users WHERE age >= 20;");
+  await page.keyboard.press("Enter");
+  await expect(xpStatus).toContainText("Lv.1 (10 XP)");
+
+  await page.reload();
+  await expect(page.getByTestId("xp-status")).toContainText("Lv.1 (10 XP)");
+});

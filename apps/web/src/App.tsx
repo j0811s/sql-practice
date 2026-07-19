@@ -12,10 +12,14 @@ const problem = problems[0];
 const COMPLETED_STORAGE_KEY = "sql-practice:completed-problems";
 
 function loadCompletedIds(): number[] {
-  const raw = localStorage.getItem(COMPLETED_STORAGE_KEY);
-  if (!raw) return [];
-  const parsed = JSON.parse(raw);
-  return Array.isArray(parsed) ? parsed : [];
+  try {
+    const raw = localStorage.getItem(COMPLETED_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }
 
 function App() {
@@ -24,11 +28,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [correct, setCorrect] = useState<boolean | null>(null);
   const [review, setReview] = useState<string | null>(null);
-  const [completedIds, setCompletedIds] = useState<number[]>([]);
-
-  useEffect(() => {
-    setCompletedIds(loadCompletedIds());
-  }, []);
+  const [completedIds, setCompletedIds] = useState<number[]>(loadCompletedIds);
 
   useEffect(() => {
     let cancelled = false;
