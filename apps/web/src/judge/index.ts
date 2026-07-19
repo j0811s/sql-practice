@@ -1,12 +1,6 @@
 import type { Problem } from "@sql-practice/shared";
 import type { TableResult } from "../db/queryResult";
-
-function canonicalRow(values: unknown[]): string {
-  return values
-    .map((v) => JSON.stringify(v))
-    .sort()
-    .join(" ");
-}
+import { canonicalRow } from "./canonicalRow";
 
 function multisetEqual(a: string[], b: string[]): boolean {
   if (a.length !== b.length) return false;
