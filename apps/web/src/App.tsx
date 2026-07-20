@@ -32,6 +32,7 @@ function App() {
   const [correct, setCorrect] = useState<boolean | null>(null);
   const [review, setReview] = useState<string | null>(null);
   const [completedIds, setCompletedIds] = useState<number[]>(loadCompletedIds);
+  const [hintShown, setHintShown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const problem = problems.find((p) => p.id === selectedProblemId) ?? problems[0];
@@ -53,6 +54,7 @@ function App() {
     setError(null);
     setCorrect(null);
     setReview(null);
+    setHintShown(false);
 
     void createDb().then(async (instance) => {
       for (const statement of [...problem.schema, ...problem.seed]) {
@@ -157,6 +159,28 @@ function App() {
             <p className="panel-label">SCHEMA</p>
             <SchemaView tables={tables} />
           </section>
+
+          {problem.hint.length > 0 && (
+            <section className="hint-section">
+              {hintShown ? (
+                <>
+                  <p className="panel-label">HINT</p>
+                  <p className="hint-text" data-testid="hint-text">
+                    {problem.hint.join(" ")}
+                  </p>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className="hint-reveal"
+                  data-testid="hint-reveal"
+                  onClick={() => setHintShown(true)}
+                >
+                  ヒントを見る
+                </button>
+              )}
+            </section>
+          )}
 
           <section className="terminal-panel">
             <div className="terminal-panel__bar">schema: problem_{problem.id}</div>

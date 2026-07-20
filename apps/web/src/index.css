@@ -474,6 +474,40 @@ ul[data-testid="problem-list"] {
   border-radius: 0 6px 6px 0;
 }
 
+/* ---------- hint ---------- */
+
+.hint-section {
+  display: flex;
+}
+
+.hint-reveal {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--key);
+  border-radius: 6px;
+  background: var(--key-soft);
+  color: var(--key);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hint-reveal:hover {
+  background: var(--key);
+  color: var(--paper-raised);
+}
+
+.hint-text {
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--key-soft);
+  border-left: 3px solid var(--key);
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+}
+
 /* ---------- result (query output) ---------- */
 
 .result {
