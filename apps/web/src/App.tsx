@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PGlite } from "@electric-sql/pglite";
 import { problems } from "@sql-practice/problems";
 import { createDb, runQuery } from "./db/pglite";
@@ -6,6 +6,8 @@ import type { TableResult } from "./db/queryResult";
 import { judge } from "./judge";
 import { ProblemList } from "./problem-list/ProblemList";
 import { generateReview } from "./review";
+import { parseSchema } from "./schema/parseSchema";
+import { SchemaView } from "./schema/SchemaView";
 import { TerminalView } from "./terminal/TerminalView";
 import { calculateLevel, totalXp } from "./xp";
 
@@ -30,8 +32,19 @@ function App() {
   const [correct, setCorrect] = useState<boolean | null>(null);
   const [review, setReview] = useState<string | null>(null);
   const [completedIds, setCompletedIds] = useState<number[]>(loadCompletedIds);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const problem = problems.find((p) => p.id === selectedProblemId) ?? problems[0];
+  const tables = useMemo(() => parseSchema(problem.schema), [problem]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     let cancelled = false;
@@ -97,47 +110,109 @@ function App() {
   const level = calculateLevel(xp);
 
   return (
-    <main>
-      <h1>SQL Practice</h1>
-      <ProblemList
-        problems={problems}
-        selectedId={selectedProblemId}
-        completedIds={completedIds}
-        onSelect={setSelectedProblemId}
-      />
-      <p data-testid="xp-status">
-        Lv.{level} ({xp} XP)
-      </p>
-      <p>{problem.question}</p>
-      {db ? <TerminalView onSubmit={handleSubmit} /> : <p>データベースを初期化しています…</p>}
-      {error && <p role="alert">{error}</p>}
-      {correct !== null && (
-        <p data-testid="judge-result">
-          {correct ? "○ 正解です！" : "× 不正解です。もう一度考えてみましょう"}
+    <div className="app-shell">
+      <header className="topbar">
+        <div className="topbar__left">
+          <button
+            type="button"
+            className="menu-toggle"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="problem-panel"
+            aria-label={mobileMenuOpen ? "問題一覧を閉じる" : "問題一覧を開く"}
+            onClick={() => setMobileMenuOpen((open) => !open)}
+          >
+            ≡
+          </button>
+          <h1 className="wordmark">
+            SQL_<em>PRACTICE</em>
+          </h1>
+        </div>
+        <p className="status-readout" data-testid="xp-status">
+          Lv.<strong>{level}</strong> ({xp} XP)
         </p>
-      )}
-      {review && <p data-testid="review">{review}</p>}
-      {result && (
-        <table data-testid="result-table">
-          <thead>
-            <tr>
-              {result.columns.map((column, i) => (
-                <th key={i}>{column}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {result.rows.map((row, i) => (
-              <tr key={i}>
-                {row.map((cell, j) => (
-                  <td key={j}>{String(cell)}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </main>
+      </header>
+      <div className="workbench">
+        {mobileMenuOpen && <div className="menu-backdrop" onClick={() => setMobileMenuOpen(false)} />}
+        <aside id="problem-panel" className={`sidebar${mobileMenuOpen ? " is-open" : ""}`}>
+          <p className="sidebar-heading">
+            PROBLEMS <span className="count">{problems.length}</span>
+          </p>
+          <ProblemList
+            problems={problems}
+            selectedId={selectedProblemId}
+            completedIds={completedIds}
+            onSelect={(id) => {
+              setSelectedProblemId(id);
+              setMobileMenuOpen(false);
+            }}
+          />
+        </aside>
+        <main className="console">
+          <div className="problem-brief">
+            <span className="problem-code">Q{String(problem.id).padStart(2, "0")}</span>
+            <p className="question">{problem.question}</p>
+          </div>
+
+          <section className="schema-section">
+            <p className="panel-label">SCHEMA</p>
+            <SchemaView tables={tables} />
+          </section>
+
+          <section className="terminal-panel">
+            <div className="terminal-panel__bar">schema: problem_{problem.id}</div>
+            {db ? (
+              <TerminalView onSubmit={handleSubmit} />
+            ) : (
+              <p className="loading">データベースを初期化しています…</p>
+            )}
+          </section>
+
+          {error && (
+            <p role="alert" className="banner banner--error">
+              {error}
+            </p>
+          )}
+          {correct !== null && (
+            <p data-testid="judge-result" className={`verdict ${correct ? "verdict--ok" : "verdict--err"}`}>
+              {correct ? "○ 正解です！" : "× 不正解です。もう一度考えてみましょう"}
+            </p>
+          )}
+          {review && (
+            <p data-testid="review" className="review">
+              {review}
+            </p>
+          )}
+          {result && (
+            <section className="result">
+              <p className="panel-label">RESULT</p>
+              <div className="result__scroll">
+                <table data-testid="result-table">
+                  <thead>
+                    <tr>
+                      <th className="gutter">#</th>
+                      {result.columns.map((column, i) => (
+                        <th key={i}>{column}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.rows.map((row, i) => (
+                      <tr key={i}>
+                        <td className="gutter">{i + 1}</td>
+                        {row.map((cell, j) => (
+                          <td key={j}>{String(cell)}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="result__caption">({result.rows.length} rows)</p>
+            </section>
+          )}
+        </main>
+      </div>
+    </div>
   );
 }
 
