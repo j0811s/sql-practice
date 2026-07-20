@@ -32,6 +32,9 @@ importers:
       '@hono/node-server':
         specifier: ^2.0.10
         version: 2.0.10(hono@4.12.30)
+      '@sql-practice/problems':
+        specifier: workspace:*
+        version: link:../../packages/problems
       '@sql-practice/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -48,6 +51,9 @@ importers:
       '@electric-sql/pglite':
         specifier: 0.5.4
         version: 0.5.4
+      '@sql-practice/api':
+        specifier: workspace:*
+        version: link:../api
       '@sql-practice/problems':
         specifier: workspace:*
         version: link:../../packages/problems
@@ -67,6 +73,9 @@ importers:
         specifier: ^19.2.7
         version: 19.2.7(react@19.2.7)
     devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^5.20260719.1
+        version: 5.20260719.1
       '@types/node':
         specifier: ^26.1.1
         version: 26.1.1
@@ -95,6 +104,9 @@ importers:
   packages/shared: {}
 
 packages:
+
+  '@cloudflare/workers-types@5.20260719.1':
+    resolution: {integrity: sha512-DcGasbfUuczQilc80vhL2MPPdWcaxWkx0hN5IW9UdNDBdrRvWcal3akSJ6Ccm7e8+/OGeR+8tYrqkykA3YGSZw==}
 
   '@electric-sql/pglite@0.5.4':
     resolution: {integrity: sha512-yYZUyyXrHU7tPlCjwZQJ6hIG9DscdCCn7Uk0mYKwC1FeHX286AbcmFveMiRBEak8e9iPupjsoVImN3yJZVed2g==}
@@ -1050,6 +1062,8 @@ packages:
     hasBin: true
 
 snapshots:
+
+  '@cloudflare/workers-types@5.20260719.1': {}
 
   '@electric-sql/pglite@0.5.4': {}
 

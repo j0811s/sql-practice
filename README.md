@@ -36,12 +36,24 @@ pnpm install
 | `pnpm test`     | Vitestでユニットテストを実行                     |
 | `pnpm test:e2e` | Playwrightでスモークテストを実行                 |
 
+## デプロイ（Cloudflare Workers）
+
+SQL実行はブラウザ内のPGlite（WASM）で完結するため、`apps/web`は静的アセット（`dist/`）として配信し、`/api/*`は`apps/web/worker.ts`から`@sql-practice/api`のHonoアプリに委譲する構成で、1つのWorkerとして公開できる。設定は`apps/web/wrangler.jsonc`（`assets.run_worker_first: ["/api/*"]`で`/api/*`のみWorkerを先に通す）。
+
+`apps/api`の`/api/problems`は`@sql-practice/problems`の`problems`配列（`apps/web`が使っているものと同じ、ビルド時の静的import）を返すため、実行時にファイルシステムを読まず、Workers上でもそのまま動く。
+
+```bash
+cd apps/web
+pnpm add -D wrangler   # 初回のみ
+pnpm deploy            # vite buildしてwrangler deploy
+```
+
 ## 構成
 
 ```
 apps/
   web/       React + Vite + xterm.js + PGlite（学習UI本体）
-  api/       Hono製の問題配信API（/api/problems, /api/health。静的配信は将来の本番デプロイ対応で追加予定）
+  api/       Hono製の問題配信API（/api/problems, /api/health。Node dev server用。Cloudflare Workers向けにはapps/web/worker.tsからimportして使う）
 packages/
   shared/    共有Problem型・パース処理
   problems/  問題JSON（where / orderby / groupby / join）

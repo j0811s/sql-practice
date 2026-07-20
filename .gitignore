@@ -12,3 +12,9 @@ dist-ssr
 
 # Vite
 .vite/
+
+# Wrangler (Cloudflare)
+.wrangler/
+
+# TypeScript
+*.tsbuildinfo

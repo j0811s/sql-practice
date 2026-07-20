@@ -3,11 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "exports": {
+    ".": "./src/app.ts"
+  },
   "scripts": {
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
     "@hono/node-server": "^2.0.10",
+    "@sql-practice/problems": "workspace:*",
     "@sql-practice/shared": "workspace:*",
     "hono": "^4.12.30"
   },
