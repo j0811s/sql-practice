@@ -1,0 +1,32 @@
+{
+  "env": {
+    "CLAUDE_CODE_NEW_INIT": "true"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npx tsc:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)",
+      "Bash(git push --force:*)",
+      "Bash(curl:*)",
+      "Bash(brew:*)",
+      "Read(/.env)",
+      "Read(/.env.*)"
+    ],
+    "ask": [
+      "Bash(git commit:*)", 
+      "Bash(npm install)", 
+      "Bash(npm ci)"
+    ]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  }
+}
