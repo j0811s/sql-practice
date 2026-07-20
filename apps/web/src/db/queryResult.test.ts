@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest";
 import { toTableResult } from "./queryResult";
 
 describe("toTableResult", () => {
-  it("converts field/row objects into a column-ordered table", () => {
+  it("converts field/row arrays into a column-ordered table", () => {
     const result = toTableResult({
       fields: [{ name: "id" }, { name: "name" }, { name: "age" }],
       rows: [
-        { id: 1, name: "Alice", age: 22 },
-        { id: 3, name: "Carol", age: 35 },
+        [1, "Alice", 22],
+        [3, "Carol", 35],
       ],
     });
 
@@ -17,6 +17,18 @@ describe("toTableResult", () => {
         [1, "Alice", 22],
         [3, "Carol", 35],
       ],
+    });
+  });
+
+  it("preserves both values when two columns share the same name", () => {
+    const result = toTableResult({
+      fields: [{ name: "name" }, { name: "name" }],
+      rows: [["Alice", "Sales"]],
+    });
+
+    expect(result).toEqual({
+      columns: ["name", "name"],
+      rows: [["Alice", "Sales"]],
     });
   });
 });
