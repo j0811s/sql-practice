@@ -44,9 +44,11 @@ SQL実行はブラウザ内のPGlite（WASM）で完結するため、`apps/web`
 
 ```bash
 cd apps/web
-pnpm add -D wrangler   # 初回のみ
-pnpm deploy            # vite buildしてwrangler deploy
+npx wrangler login   # 初回のみ。ブラウザでCloudflareアカウントに認可する
+pnpm deploy          # vite buildしてwrangler deploy
 ```
+
+デプロイが終わると`https://sql-practice-web.<アカウント名>.workers.dev`が発行される（`wrangler.jsonc`の`name`から決まる）。`/`でSPAが表示され、`/api/health`が`{"status":"ok"}`を返せば成功。
 
 ## 構成
 
