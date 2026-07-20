@@ -6,6 +6,8 @@ import orderby001 from "./orderby/001.json";
 import orderby002 from "./orderby/002.json";
 import groupby001 from "./groupby/001.json";
 import groupby002 from "./groupby/002.json";
+import join001 from "./join/001.json";
+import join002 from "./join/002.json";
 
 export const problems: Problem[] = [
   where001,
@@ -15,4 +17,6 @@ export const problems: Problem[] = [
   orderby002,
   groupby001,
   groupby002,
+  join001,
+  join002,
 ].map(parseProblem);
