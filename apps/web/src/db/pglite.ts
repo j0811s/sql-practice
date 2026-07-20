@@ -6,6 +6,6 @@ export async function createDb(): Promise<PGlite> {
 }
 
 export async function runQuery(db: PGlite, sql: string): Promise<TableResult> {
-  const result = await db.query<Record<string, unknown>>(sql);
+  const result = await db.query<unknown[]>(sql, [], { rowMode: "array" });
   return toTableResult(result);
 }

@@ -11,7 +11,7 @@ const problemsDir = resolve(here, "../../../../packages/problems");
 describe("loadProblems", () => {
   it("loads the seeded example problem", () => {
     const problems = loadProblems(problemsDir);
-    expect(problems).toHaveLength(7);
+    expect(problems).toHaveLength(9);
     expect(problems.find((p) => p.id === 1)).toMatchObject({ id: 1, category: "WHERE" });
   });
 

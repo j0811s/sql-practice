@@ -9,7 +9,7 @@ describe("GET /api/problems", () => {
 
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body).toHaveLength(7);
+    expect(body).toHaveLength(9);
     expect(body.find((p: { id: number }) => p.id === 1).id).toBe(1);
   });
 });

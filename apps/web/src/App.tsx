@@ -121,8 +121,8 @@ function App() {
         <table data-testid="result-table">
           <thead>
             <tr>
-              {result.columns.map((column) => (
-                <th key={column}>{column}</th>
+              {result.columns.map((column, i) => (
+                <th key={i}>{column}</th>
               ))}
             </tr>
           </thead>

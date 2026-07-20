@@ -19,4 +19,22 @@ describe("runQuery", () => {
       ],
     });
   });
+
+  it("preserves distinct values when two selected columns share the same name", async () => {
+    const db = await createDb();
+    await db.exec("CREATE TABLE departments(id INTEGER, name TEXT);");
+    await db.exec("CREATE TABLE users(id INTEGER, name TEXT, dept_id INTEGER);");
+    await db.exec("INSERT INTO departments VALUES(1,'Sales');");
+    await db.exec("INSERT INTO users VALUES(1,'Alice',1);");
+
+    const result = await runQuery(
+      db,
+      "SELECT users.name, departments.name FROM users JOIN departments ON users.dept_id = departments.id;",
+    );
+
+    expect(result).toEqual({
+      columns: ["name", "name"],
+      rows: [["Alice", "Sales"]],
+    });
+  });
 });

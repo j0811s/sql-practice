@@ -3,8 +3,8 @@ import { problems } from "./index";
 
 describe("problems", () => {
   it("includes all seeded problems", () => {
-    expect(problems).toHaveLength(7);
-    expect(problems.map((p) => p.id).sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(problems).toHaveLength(9);
+    expect(problems.map((p) => p.id).sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
 
   it("includes the original WHERE problem", () => {
@@ -24,5 +24,10 @@ describe("problems", () => {
   it("includes the GROUPBY problems", () => {
     expect(problems.find((p) => p.id === 6)).toMatchObject({ id: 6, category: "GROUPBY" });
     expect(problems.find((p) => p.id === 7)).toMatchObject({ id: 7, category: "GROUPBY" });
+  });
+
+  it("includes the JOIN problems", () => {
+    expect(problems.find((p) => p.id === 8)).toMatchObject({ id: 8, category: "JOIN" });
+    expect(problems.find((p) => p.id === 9)).toMatchObject({ id: 9, category: "JOIN" });
   });
 });
