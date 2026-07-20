@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
-import { reduceLineBuffer, toLineBufferEvent } from "./lineBuffer";
+import { reduceLineBuffer, replaceLineEcho, toLineBufferEvent } from "./lineBuffer";
 
 const PROMPT = "sql> ";
 
@@ -58,18 +58,51 @@ export function TerminalView({ onSubmit }: TerminalViewProps) {
     term.write(PROMPT);
 
     let buffer = "";
+    let draft = "";
+    const history: string[] = [];
+    let historyIndex = 0;
+
     const disposable = term.onData((data) => {
       const event = toLineBufferEvent(data);
       if (!event) return;
+
+      if (event.type === "history-prev" || event.type === "history-next") {
+        if (event.type === "history-prev" && historyIndex > 0) {
+          if (historyIndex === history.length) draft = buffer;
+          historyIndex -= 1;
+          term.write(replaceLineEcho(buffer, history[historyIndex]));
+          buffer = history[historyIndex];
+        } else if (event.type === "history-next" && historyIndex < history.length) {
+          historyIndex += 1;
+          const line = historyIndex === history.length ? draft : history[historyIndex];
+          term.write(replaceLineEcho(buffer, line));
+          buffer = line;
+        }
+        return;
+      }
 
       const result = reduceLineBuffer(buffer, event);
       buffer = result.buffer;
       term.write(result.echo);
 
       if (result.submittedLine !== undefined) {
+        if (result.submittedLine.trim() !== "") {
+          history.push(result.submittedLine);
+        }
+        historyIndex = history.length;
+        draft = "";
         onSubmit(result.submittedLine);
         term.write(PROMPT);
       }
+    });
+
+    term.attachCustomKeyEventHandler((event) => {
+      const isCopyShortcut = (event.ctrlKey || event.metaKey) && event.code === "KeyC";
+      if (event.type === "keydown" && isCopyShortcut && term.hasSelection()) {
+        void navigator.clipboard.writeText(term.getSelection());
+        return false;
+      }
+      return true;
     });
 
     const handleResize = () => fitAddon.fit();

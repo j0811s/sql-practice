@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { reduceLineBuffer, toLineBufferEvent } from "./lineBuffer";
+import { reduceLineBuffer, replaceLineEcho, toLineBufferEvent } from "./lineBuffer";
 
 describe("reduceLineBuffer", () => {
   it("appends printable characters to the buffer and echoes them", () => {
@@ -21,6 +21,21 @@ describe("reduceLineBuffer", () => {
     const result = reduceLineBuffer("SELECT 1;", { type: "enter" });
     expect(result).toEqual({ buffer: "", echo: "\r\n", submittedLine: "SELECT 1;" });
   });
+
+  it("appends pasted text to the buffer and echoes it verbatim", () => {
+    const result = reduceLineBuffer("SELECT ", { type: "paste", text: "* FROM users;" });
+    expect(result).toEqual({ buffer: "SELECT * FROM users;", echo: "* FROM users;" });
+  });
+});
+
+describe("replaceLineEcho", () => {
+  it("erases every character of the old buffer before writing the new line", () => {
+    expect(replaceLineEcho("ab", "SELECT 1")).toBe("\b \b\b \bSELECT 1");
+  });
+
+  it("returns just the new line when the old buffer was empty", () => {
+    expect(replaceLineEcho("", "SELECT 1")).toBe("SELECT 1");
+  });
 });
 
 describe("toLineBufferEvent", () => {
@@ -36,7 +51,37 @@ describe("toLineBufferEvent", () => {
     expect(toLineBufferEvent("a")).toEqual({ type: "printable", char: "a" });
   });
 
-  it("ignores control sequences such as arrow keys", () => {
-    expect(toLineBufferEvent("\x1b[A")).toBeNull();
+  it("maps the up arrow to history-prev", () => {
+    expect(toLineBufferEvent("\x1b[A")).toEqual({ type: "history-prev" });
+  });
+
+  it("maps the down arrow to history-next", () => {
+    expect(toLineBufferEvent("\x1b[B")).toEqual({ type: "history-next" });
+  });
+
+  it("ignores escape sequences it doesn't recognize", () => {
+    expect(toLineBufferEvent("\x1b[C")).toBeNull();
+  });
+
+  it("maps multi-character input to a paste event", () => {
+    expect(toLineBufferEvent("SELECT * FROM users;")).toEqual({
+      type: "paste",
+      text: "SELECT * FROM users;",
+    });
+  });
+
+  it("collapses newlines in pasted text into spaces", () => {
+    expect(toLineBufferEvent("SELECT 1\nFROM users")).toEqual({
+      type: "paste",
+      text: "SELECT 1 FROM users",
+    });
+  });
+
+  it("trims a trailing newline from pasted text", () => {
+    expect(toLineBufferEvent("SELECT 1;\n")).toEqual({ type: "paste", text: "SELECT 1;" });
+  });
+
+  it("ignores a paste that is empty after sanitizing", () => {
+    expect(toLineBufferEvent("\n")).toBeNull();
   });
 });
