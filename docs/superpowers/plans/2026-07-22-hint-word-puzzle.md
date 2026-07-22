@@ -472,8 +472,8 @@ describe("shuffle", () => {
   });
 
   it("is deterministic for an injected random source", () => {
-    const random = () => 0; // Fisher-Yates with random()===0 always swaps with index 0
-    expect(shuffle([1, 2, 3, 4], random)).toEqual([4, 1, 2, 3]);
+    const random = () => 0; // backward Fisher-Yates: always swaps with the lowest unshuffled index
+    expect(shuffle([1, 2, 3, 4], random)).toEqual([2, 3, 4, 1]);
   });
 });
 ```
