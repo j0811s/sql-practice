@@ -1,0 +1,24 @@
+{
+  "id": 10,
+  "title": "IN演算子で複数部署のユーザーを取得",
+  "difficulty": 1,
+  "category": "WHERE",
+  "question": "SalesまたはMarketing部署のユーザーを取得してください。",
+  "schema": ["CREATE TABLE users(id INTEGER,name TEXT,age INTEGER,dept TEXT);"],
+  "seed": [
+    "INSERT INTO users VALUES(1,'Alice',22,'Sales');",
+    "INSERT INTO users VALUES(2,'Bob',18,'Sales');",
+    "INSERT INTO users VALUES(3,'Carol',35,'Engineering');",
+    "INSERT INTO users VALUES(4,'Dave',28,'Engineering');",
+    "INSERT INTO users VALUES(5,'Eve',41,'Marketing');",
+    "INSERT INTO users VALUES(6,'Frank',19,'Marketing');"
+  ],
+  "expectedResult": [
+    { "id": 1, "name": "Alice", "age": 22, "dept": "Sales" },
+    { "id": 2, "name": "Bob", "age": 18, "dept": "Sales" },
+    { "id": 5, "name": "Eve", "age": 41, "dept": "Marketing" },
+    { "id": 6, "name": "Frank", "age": 19, "dept": "Marketing" }
+  ],
+  "hint": ["IN演算子は複数の値のいずれかに一致する行を取得します。", "WHERE dept IN ('Sales', 'Marketing') のように書きます。"],
+  "orderMatters": false
+}

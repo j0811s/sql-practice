@@ -1,0 +1,24 @@
+{
+  "id": 13,
+  "title": "所属人数が3人以上の部署を取得",
+  "difficulty": 3,
+  "category": "GROUPBY",
+  "question": "所属人数が3人以上の部署を取得してください。",
+  "schema": ["CREATE TABLE users(id INTEGER,name TEXT,age INTEGER,dept TEXT);"],
+  "seed": [
+    "INSERT INTO users VALUES(1,'Alice',22,'Sales');",
+    "INSERT INTO users VALUES(2,'Bob',18,'Sales');",
+    "INSERT INTO users VALUES(3,'Carol',35,'Engineering');",
+    "INSERT INTO users VALUES(4,'Dave',28,'Engineering');",
+    "INSERT INTO users VALUES(5,'Eve',41,'Marketing');",
+    "INSERT INTO users VALUES(6,'Frank',19,'Marketing');",
+    "INSERT INTO users VALUES(7,'Grace',30,'Sales');",
+    "INSERT INTO users VALUES(8,'Heidi',26,'Engineering');"
+  ],
+  "expectedResult": [
+    { "dept": "Sales", "count": 3 },
+    { "dept": "Engineering", "count": 3 }
+  ],
+  "hint": ["HAVING句はGROUP BYでまとめた後の集計結果に条件を指定します。", "人数を数えるにはCOUNT(*)を使います。"],
+  "orderMatters": false
+}

@@ -1,0 +1,26 @@
+{
+  "id": 12,
+  "title": "部署昇順・年齢降順で並べ替え",
+  "difficulty": 2,
+  "category": "ORDERBY",
+  "question": "部署名の昇順で、同じ部署内では年齢の高い順に並べて取得してください。",
+  "schema": ["CREATE TABLE users(id INTEGER,name TEXT,age INTEGER,dept TEXT);"],
+  "seed": [
+    "INSERT INTO users VALUES(1,'Alice',22,'Sales');",
+    "INSERT INTO users VALUES(2,'Bob',18,'Sales');",
+    "INSERT INTO users VALUES(3,'Carol',35,'Engineering');",
+    "INSERT INTO users VALUES(4,'Dave',28,'Engineering');",
+    "INSERT INTO users VALUES(5,'Eve',41,'Marketing');",
+    "INSERT INTO users VALUES(6,'Frank',19,'Marketing');"
+  ],
+  "expectedResult": [
+    { "id": 3, "name": "Carol", "age": 35, "dept": "Engineering" },
+    { "id": 4, "name": "Dave", "age": 28, "dept": "Engineering" },
+    { "id": 5, "name": "Eve", "age": 41, "dept": "Marketing" },
+    { "id": 6, "name": "Frank", "age": 19, "dept": "Marketing" },
+    { "id": 1, "name": "Alice", "age": 22, "dept": "Sales" },
+    { "id": 2, "name": "Bob", "age": 18, "dept": "Sales" }
+  ],
+  "hint": ["ORDER BYには複数の列をカンマ区切りで指定できます。", "部署名は昇順（ASC）、年齢は降順（DESC）にします。"],
+  "orderMatters": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": 11,
+  "title": "年齢が高い上位3人を取得",
+  "difficulty": 2,
+  "category": "ORDERBY",
+  "question": "年齢が高い上位3人のユーザーを取得してください（年齢の高い順）。",
+  "schema": ["CREATE TABLE users(id INTEGER,name TEXT,age INTEGER,dept TEXT);"],
+  "seed": [
+    "INSERT INTO users VALUES(1,'Alice',22,'Sales');",
+    "INSERT INTO users VALUES(2,'Bob',18,'Sales');",
+    "INSERT INTO users VALUES(3,'Carol',35,'Engineering');",
+    "INSERT INTO users VALUES(4,'Dave',28,'Engineering');",
+    "INSERT INTO users VALUES(5,'Eve',41,'Marketing');",
+    "INSERT INTO users VALUES(6,'Frank',19,'Marketing');"
+  ],
+  "expectedResult": [
+    { "id": 5, "name": "Eve", "age": 41, "dept": "Marketing" },
+    { "id": 3, "name": "Carol", "age": 35, "dept": "Engineering" },
+    { "id": 4, "name": "Dave", "age": 28, "dept": "Engineering" }
+  ],
+  "hint": ["ORDER BYで並べ替えた後、LIMITで件数を絞り込めます。", "上位3件なのでLIMIT 3を指定します。"],
+  "orderMatters": true
+}
