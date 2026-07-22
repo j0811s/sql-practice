@@ -28,6 +28,9 @@ export function parseProblem(json: unknown): Problem {
     throw new Error("Problem.expectedResult must be an array");
   }
   if (!isStringArray(candidate.hint)) throw new Error("Problem.hint must be a string array");
+  if (typeof candidate.answerQuery !== "string") {
+    throw new Error("Problem.answerQuery must be a string");
+  }
   if (typeof candidate.orderMatters !== "boolean") {
     throw new Error("Problem.orderMatters must be a boolean");
   }

@@ -18,6 +18,7 @@ const validProblem = {
     { id: 3, name: "Carol", age: 35 },
   ],
   hint: ["WHERE句を使います。", "『以上』なので比較演算子を確認してみましょう。"],
+  answerQuery: "SELECT id, name, age FROM users WHERE age >= 20;",
   orderMatters: false,
 };
 
@@ -33,6 +34,12 @@ describe("parseProblem", () => {
   it("throws when orderMatters has the wrong type", () => {
     expect(() => parseProblem({ ...validProblem, orderMatters: "false" })).toThrow(
       "Problem.orderMatters must be a boolean",
+    );
+  });
+
+  it("throws when answerQuery has the wrong type", () => {
+    expect(() => parseProblem({ ...validProblem, answerQuery: 123 })).toThrow(
+      "Problem.answerQuery must be a string",
     );
   });
 
