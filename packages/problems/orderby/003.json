@@ -19,5 +19,6 @@
     { "id": 4, "name": "Dave", "age": 28, "dept": "Engineering" }
   ],
   "hint": ["ORDER BYで並べ替えた後、LIMITで件数を絞り込めます。", "上位3件なのでLIMIT 3を指定します。"],
+  "answerQuery": "SELECT id, name, age, dept FROM users ORDER BY age DESC LIMIT 3;",
   "orderMatters": true
 }

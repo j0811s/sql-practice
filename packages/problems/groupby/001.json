@@ -19,5 +19,6 @@
     { "dept": "Marketing", "count": 2 }
   ],
   "hint": ["GROUP BY句を使います。", "件数を数えるにはCOUNT(*)を使います。"],
+  "answerQuery": "SELECT dept, COUNT(*) FROM users GROUP BY dept;",
   "orderMatters": false
 }

@@ -22,5 +22,6 @@
     { "id": 5, "name": "Eve", "age": 41, "dept": "Marketing" }
   ],
   "hint": ["ORDER BY句を使います。", "昇順はASC（省略可能）です。"],
+  "answerQuery": "SELECT id, name, age, dept FROM users ORDER BY age ASC;",
   "orderMatters": true
 }

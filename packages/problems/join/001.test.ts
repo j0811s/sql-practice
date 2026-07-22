@@ -9,5 +9,6 @@ describe("join/001.json", () => {
 
     expect(problem.id).toBe(8);
     expect(problem.category).toBe("JOIN");
+    expect(problem.answerQuery.length).toBeGreaterThan(0);
   });
 });

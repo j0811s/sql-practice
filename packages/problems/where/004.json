@@ -20,5 +20,6 @@
     { "id": 6, "name": "Frank", "age": 19, "dept": "Marketing" }
   ],
   "hint": ["IN演算子は複数の値のいずれかに一致する行を取得します。", "WHERE dept IN ('Sales', 'Marketing') のように書きます。"],
+  "answerQuery": "SELECT id, name, age, dept FROM users WHERE dept IN ('Sales', 'Marketing');",
   "orderMatters": false
 }

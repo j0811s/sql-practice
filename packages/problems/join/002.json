@@ -24,5 +24,6 @@
     { "name": "Frank" }
   ],
   "hint": ["JOIN句とWHERE句を組み合わせます。", "departments.nameで部署名を絞り込みます。"],
+  "answerQuery": "SELECT users.name FROM users JOIN departments ON users.dept_id = departments.id WHERE departments.name = 'Marketing';",
   "orderMatters": false
 }

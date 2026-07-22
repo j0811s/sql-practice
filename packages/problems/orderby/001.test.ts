@@ -9,5 +9,6 @@ describe("orderby/001.json", () => {
 
     expect(problem.id).toBe(4);
     expect(problem.category).toBe("ORDERBY");
+    expect(problem.answerQuery.length).toBeGreaterThan(0);
   });
 });

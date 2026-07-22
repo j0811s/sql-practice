@@ -22,5 +22,6 @@
     { "id": 2, "name": "Bob", "age": 18, "dept": "Sales" }
   ],
   "hint": ["ORDER BY句を使います。", "降順はDESCを指定します。"],
+  "answerQuery": "SELECT id, name, age, dept FROM users ORDER BY age DESC;",
   "orderMatters": true
 }

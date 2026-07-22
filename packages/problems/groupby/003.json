@@ -20,5 +20,6 @@
     { "dept": "Engineering", "count": 3 }
   ],
   "hint": ["HAVING句はGROUP BYでまとめた後の集計結果に条件を指定します。", "人数を数えるにはCOUNT(*)を使います。"],
+  "answerQuery": "SELECT dept, COUNT(*) FROM users GROUP BY dept HAVING COUNT(*) >= 3;",
   "orderMatters": false
 }

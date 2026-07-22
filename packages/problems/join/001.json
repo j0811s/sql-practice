@@ -28,5 +28,6 @@
     { "user_name": "Frank", "dept_name": "Marketing" }
   ],
   "hint": ["JOIN句を使って2つのテーブルを結合します。", "ON句でusers.dept_idとdepartments.idを一致させます。"],
+  "answerQuery": "SELECT users.name, departments.name FROM users JOIN departments ON users.dept_id = departments.id;",
   "orderMatters": false
 }

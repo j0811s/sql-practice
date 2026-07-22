@@ -19,5 +19,6 @@
     { "dept": "Marketing", "total_age": 60 }
   ],
   "hint": ["GROUP BY句を使います。", "合計を求めるにはSUM()を使います。"],
+  "answerQuery": "SELECT dept, SUM(age) FROM users GROUP BY dept;",
   "orderMatters": false
 }

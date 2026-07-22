@@ -9,5 +9,6 @@ describe("groupby/002.json", () => {
 
     expect(problem.id).toBe(7);
     expect(problem.category).toBe("GROUPBY");
+    expect(problem.answerQuery.length).toBeGreaterThan(0);
   });
 });

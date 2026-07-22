@@ -30,5 +30,6 @@
     { "user_name": "Grace", "dept_name": null }
   ],
   "hint": ["LEFT JOINは左側のテーブルの行を、一致がなくてもすべて残します。", "一致しない場合、右側テーブルの列はNULLになります。"],
+  "answerQuery": "SELECT users.name, departments.name FROM users LEFT JOIN departments ON users.dept_id = departments.id;",
   "orderMatters": false
 }

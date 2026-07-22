@@ -20,5 +20,6 @@
     { "id": 6, "name": "Frank", "age": 19, "dept": "Marketing" }
   ],
   "hint": ["WHERE句を使います。", "『未満』なので比較演算子を確認してみましょう。"],
+  "answerQuery": "SELECT id, name, age, dept FROM users WHERE age < 30;",
   "orderMatters": false
 }

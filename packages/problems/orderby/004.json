@@ -22,5 +22,6 @@
     { "id": 2, "name": "Bob", "age": 18, "dept": "Sales" }
   ],
   "hint": ["ORDER BYには複数の列をカンマ区切りで指定できます。", "部署名は昇順（ASC）、年齢は降順（DESC）にします。"],
+  "answerQuery": "SELECT id, name, age, dept FROM users ORDER BY dept ASC, age DESC;",
   "orderMatters": true
 }

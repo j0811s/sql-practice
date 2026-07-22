@@ -9,5 +9,6 @@ describe("where/003.json", () => {
 
     expect(problem.id).toBe(3);
     expect(problem.category).toBe("WHERE");
+    expect(problem.answerQuery.length).toBeGreaterThan(0);
   });
 });

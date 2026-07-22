@@ -19,5 +19,6 @@
     { "dept": "Marketing", "max_age": 41 }
   ],
   "hint": ["MAX()は最大値を求める集計関数です。", "GROUP BYと組み合わせて部署ごとの最大値を求めます。"],
+  "answerQuery": "SELECT dept, MAX(age) FROM users GROUP BY dept;",
   "orderMatters": false
 }

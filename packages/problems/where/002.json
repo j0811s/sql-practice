@@ -18,5 +18,6 @@
     { "id": 4, "name": "Dave", "age": 28, "dept": "Engineering" }
   ],
   "hint": ["WHERE句で文字列を比較する際は引用符で囲みます。", "dept列の値を確認してみましょう。"],
+  "answerQuery": "SELECT id, name, age, dept FROM users WHERE dept = 'Engineering';",
   "orderMatters": false
 }
