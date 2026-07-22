@@ -10,7 +10,7 @@ interface ProblemListProps {
 export function ProblemList({ problems, selectedId, completedIds, onSelect }: ProblemListProps) {
   return (
     <ul data-testid="problem-list">
-      {problems.map((p) => (
+      {problems.map((p, i) => (
         <li key={p.id} className="problem-row">
           <button
             type="button"
@@ -20,7 +20,7 @@ export function ProblemList({ problems, selectedId, completedIds, onSelect }: Pr
             className="problem-btn"
           >
             <span className="glyph">{completedIds.includes(p.id) ? "✓" : ""}</span>
-            <span className="index">{String(p.id).padStart(2, "0")}</span>
+            <span className="index">{String(i + 1).padStart(2, "0")}</span>
             <span className="title">{p.title}</span>
           </button>
         </li>
