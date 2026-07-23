@@ -14,6 +14,7 @@ function makeProblem(overrides: Partial<Problem>): Problem {
     seed: [],
     expectedResult: [],
     hint: [],
+    answerQuery: "SELECT 1;",
     orderMatters: false,
     ...overrides,
   };
