@@ -1,14 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { PGlite } from "@electric-sql/pglite";
 import { problems } from "@sql-practice/problems";
 import { createDb, runQuery } from "./db/pglite";
 import type { TableResult } from "./db/queryResult";
+import { HintWordPuzzle } from "./hint/HintWordPuzzle";
+import { shuffle } from "./hint/shuffle";
+import { tokenizeQuery } from "./hint/tokenizeQuery";
 import { judge } from "./judge";
 import { ProblemList } from "./problem-list/ProblemList";
 import { generateReview } from "./review";
 import { parseSchema } from "./schema/parseSchema";
 import { SchemaView } from "./schema/SchemaView";
 import { TerminalView } from "./terminal/TerminalView";
+import type { TerminalViewHandle } from "./terminal/TerminalView";
 import { calculateLevel, totalXp } from "./xp";
 
 const COMPLETED_STORAGE_KEY = "sql-practice:completed-problems";
@@ -33,6 +37,8 @@ function App() {
   const [review, setReview] = useState<string | null>(null);
   const [completedIds, setCompletedIds] = useState<number[]>(loadCompletedIds);
   const [hintShown, setHintShown] = useState(false);
+  const [wordHintWords, setWordHintWords] = useState<string[] | null>(null);
+  const terminalRef = useRef<TerminalViewHandle>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const problem = problems.find((p) => p.id === selectedProblemId) ?? problems[0];
@@ -55,6 +61,7 @@ function App() {
     setCorrect(null);
     setReview(null);
     setHintShown(false);
+    setWordHintWords(null);
 
     void createDb().then(async (instance) => {
       for (const statement of [...problem.schema, ...problem.seed]) {
@@ -182,10 +189,30 @@ function App() {
             </section>
           )}
 
+          {hintShown && (
+            <section className="hint-more-section">
+              {wordHintWords ? (
+                <HintWordPuzzle
+                  words={wordHintWords}
+                  onInsert={(word) => terminalRef.current?.insertText(`${word} `)}
+                />
+              ) : (
+                <button
+                  type="button"
+                  className="hint-reveal"
+                  data-testid="hint-more-reveal"
+                  onClick={() => setWordHintWords(shuffle(tokenizeQuery(problem.answerQuery)))}
+                >
+                  もっとヒントを見る
+                </button>
+              )}
+            </section>
+          )}
+
           <section className="terminal-panel">
             <div className="terminal-panel__bar">schema: problem_{problem.id}</div>
             {db ? (
-              <TerminalView onSubmit={handleSubmit} />
+              <TerminalView ref={terminalRef} onSubmit={handleSubmit} />
             ) : (
               <p className="loading">データベースを初期化しています…</p>
             )}

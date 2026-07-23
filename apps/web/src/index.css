@@ -508,6 +508,54 @@ ul[data-testid="problem-list"] {
   border-radius: 0 6px 6px 0;
 }
 
+.hint-more-section {
+  margin-top: 4px;
+}
+
+.hint-puzzle {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hint-puzzle__words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hint-word {
+  padding: 4px 10px;
+  border: 1px solid var(--key);
+  border-radius: 999px;
+  background: var(--key-soft);
+  color: var(--key);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.hint-word:hover:not(:disabled) {
+  background: var(--key);
+  color: var(--paper-raised);
+}
+
+.hint-word:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.hint-puzzle__reset {
+  align-self: flex-start;
+  border: none;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
 /* ---------- result (query output) ---------- */
 
 .result {
