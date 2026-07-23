@@ -100,3 +100,43 @@ test("switching problems resets state, reseeds the DB, and tracks completion ind
   await expect(page.getByTestId("problem-item-2")).toContainText("✓");
   await expect(page.getByTestId("xp-status")).toContainText("Lv.1 (20 XP)");
 });
+
+test("reveals a shuffled word puzzle after both hint levels and inserts clicks into the terminal", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await page.getByTestId("hint-reveal").click();
+  await expect(page.getByTestId("hint-text")).toBeVisible();
+
+  await page.getByTestId("hint-more-reveal").click();
+  const puzzle = page.getByTestId("hint-puzzle");
+  await expect(puzzle).toBeVisible();
+
+  const wordButtons = puzzle.locator(".hint-word");
+  await expect(wordButtons).toHaveCount(10);
+
+  const clickWord = async (word: string) => {
+    // Locate via the ":not([disabled])" filter only to pick the button, since duplicate words
+    // (e.g. "age" appears twice) need to resolve to whichever instance is still enabled. Capture
+    // its stable data-testid before clicking, then re-locate by that testid (without the disabled
+    // filter) to assert the disabled state — re-querying ".hint-word:not([disabled])" after the
+    // click would no longer match the now-disabled element and fail with "element(s) not found".
+    const button = puzzle.locator(".hint-word:not([disabled])").filter({ hasText: word }).first();
+    const testId = await button.getAttribute("data-testid");
+    expect(testId).not.toBeNull();
+    await button.click();
+    await expect(puzzle.getByTestId(testId!)).toBeDisabled();
+  };
+
+  for (const word of ["SELECT", "id,", "name,", "age", "FROM", "users", "WHERE", "age", ">=", "20;"]) {
+    await clickWord(word);
+  }
+
+  await page.locator(".xterm-helper-textarea").click();
+  await page.keyboard.press("Enter");
+
+  await expect(page.getByTestId("judge-result")).toContainText("○");
+  await expect(page.getByTestId("result-table")).toContainText("Alice");
+  await expect(page.getByTestId("result-table")).toContainText("Carol");
+});
