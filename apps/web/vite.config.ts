@@ -4,6 +4,11 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    rolldownOptions: {
+      external: ["workbox-window"],
+    },
+  },
   plugins: [
     react(),
     VitePWA({

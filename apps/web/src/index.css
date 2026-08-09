@@ -446,6 +446,29 @@ ul[data-testid="problem-list"] {
   border: 1px solid var(--err);
 }
 
+.update-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--key-soft);
+  color: var(--key);
+  font-size: 14px;
+  border-bottom: 1px solid var(--key);
+}
+
+.update-banner__button {
+  padding: 4px 12px;
+  border: 1px solid var(--key);
+  border-radius: 6px;
+  background: var(--key);
+  color: var(--paper-raised);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .verdict {
   margin: 0;
   font-weight: 600;

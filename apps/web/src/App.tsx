@@ -8,6 +8,7 @@ import { shuffle } from "./hint/shuffle";
 import { tokenizeQuery } from "./hint/tokenizeQuery";
 import { judge } from "./judge";
 import { ProblemList } from "./problem-list/ProblemList";
+import { UpdateBanner } from "./pwa/UpdateBanner";
 import { generateReview } from "./review";
 import { parseSchema } from "./schema/parseSchema";
 import { SchemaView } from "./schema/SchemaView";
@@ -120,6 +121,7 @@ function App() {
 
   return (
     <div className="app-shell">
+      <UpdateBanner />
       <header className="topbar">
         <div className="topbar__left">
           <button
