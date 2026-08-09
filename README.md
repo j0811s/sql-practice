@@ -11,6 +11,7 @@
 - XP・レベルシステム（正解履歴は`localStorage`に保存）
 - 問題一覧サイドバー（画面が狭い場合はハンバーガーメニューに切り替え）
 - カテゴリ: WHERE / ORDER BY / GROUP BY / JOIN（全15問）
+- PWA対応（オフラインでも起動・利用でき、ホーム画面/アプリ一覧にインストール可能）
 
 設計の詳細は`docs/superpowers/specs/`以下に機能ごとの設計書がある。
 
@@ -49,6 +50,8 @@ pnpm deploy          # vite buildしてwrangler deploy
 ```
 
 デプロイが終わると`https://sql-practice-web.<アカウント名>.workers.dev`が発行される（`wrangler.jsonc`の`name`から決まる）。`/`でSPAが表示され、`/api/health`が`{"status":"ok"}`を返せば成功。
+
+PWA関連の`sw.js` / `manifest.webmanifest` / アイコン各種も、他の静的アセットと同様に`vite build`で`dist/`直下に出力され、既存の`assets`バインディングでそのまま配信される。`wrangler.jsonc`の設定変更は不要。
 
 ## 構成
 

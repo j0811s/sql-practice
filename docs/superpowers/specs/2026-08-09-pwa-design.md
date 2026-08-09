@@ -37,7 +37,7 @@
 
 ## Web App Manifest
 
-`vite-plugin-pwa`の`manifest`オプションで生成する（出力は`dist/manifest.webmanifest`、`index.html`への`<link rel="manifest">`・`<meta name="theme-color">`の挿入はプラグインが自動で行う）。
+`vite-plugin-pwa`の`manifest`オプションで生成する（出力は`dist/manifest.webmanifest`、`index.html`への`<link rel="manifest">`の挿入はプラグインが自動で行う。`<meta name="theme-color">`は`@vite-pwa/assets-generator`という今回未使用のオプション統合がないと自動挿入されないため、`index.html`に明示的に追加する）。
 
 ```ts
 manifest: {
