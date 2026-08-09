@@ -35,6 +35,9 @@ export default defineConfig({
         // 黙ってprecacheから漏れ、オフライン時にSQL実行だけ動かなくなるのを防ぐため引き上げる。
         maximumFileSizeToCacheInBytes: 20 * 1024 * 1024,
         navigateFallback: "/index.html",
+        // navigateFallbackが/api/*も飲み込むと、SPAシェルにフォールバックしてしまい
+        // Workerの実レスポンス（例: /api/health）に届かなくなるため除外する。
+        navigateFallbackDenylist: [/^\/api\//],
       },
     }),
   ],
