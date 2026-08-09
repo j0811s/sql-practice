@@ -10,7 +10,7 @@
 - 問題ごとに1つ確認できるヒント
 - XP・レベルシステム（正解履歴は`localStorage`に保存）
 - 問題一覧サイドバー（画面が狭い場合はハンバーガーメニューに切り替え）
-- カテゴリ: WHERE / ORDER BY / GROUP BY / JOIN（全15問）
+- カテゴリ: WHERE / ORDER BY / GROUP BY / JOIN（全20問）
 - PWA対応（オフラインでも起動・利用でき、ホーム画面/アプリ一覧にインストール可能）
 
 設計の詳細は`docs/superpowers/specs/`以下に機能ごとの設計書がある。

@@ -1,0 +1,24 @@
+{
+  "id": 18,
+  "title": "部署ごとの最年少年齢を取得",
+  "difficulty": 3,
+  "category": "GROUPBY",
+  "question": "部署ごとの最年少年齢を取得してください。",
+  "schema": ["CREATE TABLE users(id INTEGER,name TEXT,age INTEGER,dept TEXT);"],
+  "seed": [
+    "INSERT INTO users VALUES(1,'Alice',22,'Sales');",
+    "INSERT INTO users VALUES(2,'Bob',18,'Sales');",
+    "INSERT INTO users VALUES(3,'Carol',35,'Engineering');",
+    "INSERT INTO users VALUES(4,'Dave',28,'Engineering');",
+    "INSERT INTO users VALUES(5,'Eve',41,'Marketing');",
+    "INSERT INTO users VALUES(6,'Frank',19,'Marketing');"
+  ],
+  "expectedResult": [
+    { "dept": "Sales", "min_age": 18 },
+    { "dept": "Engineering", "min_age": 28 },
+    { "dept": "Marketing", "min_age": 19 }
+  ],
+  "hint": ["MIN()は最小値を求める集計関数です。", "GROUP BYと組み合わせて部署ごとの最小値を求めます。"],
+  "answerQuery": "SELECT dept, MIN(age) FROM users GROUP BY dept;",
+  "orderMatters": false
+}

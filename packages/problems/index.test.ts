@@ -3,9 +3,9 @@ import { problems } from "./index";
 
 describe("problems", () => {
   it("includes all seeded problems", () => {
-    expect(problems).toHaveLength(15);
+    expect(problems).toHaveLength(20);
     expect(problems.map((p) => p.id).sort((a, b) => a - b)).toEqual([
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
     ]);
   });
 
@@ -13,10 +13,12 @@ describe("problems", () => {
     expect(problems.find((p) => p.id === 1)).toMatchObject({ id: 1, category: "WHERE" });
   });
 
-  it("includes the new WHERE problems", () => {
+  it("includes the WHERE problems", () => {
     expect(problems.find((p) => p.id === 2)).toMatchObject({ id: 2, category: "WHERE" });
     expect(problems.find((p) => p.id === 3)).toMatchObject({ id: 3, category: "WHERE" });
     expect(problems.find((p) => p.id === 10)).toMatchObject({ id: 10, category: "WHERE" });
+    expect(problems.find((p) => p.id === 16)).toMatchObject({ id: 16, category: "WHERE" });
+    expect(problems.find((p) => p.id === 17)).toMatchObject({ id: 17, category: "WHERE" });
   });
 
   it("includes the ORDERBY problems", () => {
@@ -31,11 +33,14 @@ describe("problems", () => {
     expect(problems.find((p) => p.id === 7)).toMatchObject({ id: 7, category: "GROUPBY" });
     expect(problems.find((p) => p.id === 13)).toMatchObject({ id: 13, category: "GROUPBY" });
     expect(problems.find((p) => p.id === 14)).toMatchObject({ id: 14, category: "GROUPBY" });
+    expect(problems.find((p) => p.id === 18)).toMatchObject({ id: 18, category: "GROUPBY" });
   });
 
   it("includes the JOIN problems", () => {
     expect(problems.find((p) => p.id === 8)).toMatchObject({ id: 8, category: "JOIN" });
     expect(problems.find((p) => p.id === 9)).toMatchObject({ id: 9, category: "JOIN" });
     expect(problems.find((p) => p.id === 15)).toMatchObject({ id: 15, category: "JOIN" });
+    expect(problems.find((p) => p.id === 19)).toMatchObject({ id: 19, category: "JOIN" });
+    expect(problems.find((p) => p.id === 20)).toMatchObject({ id: 20, category: "JOIN" });
   });
 });

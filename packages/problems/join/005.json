@@ -1,0 +1,33 @@
+{
+  "id": 20,
+  "title": "JOINと複数列ORDER BYで部署名昇順に取得",
+  "difficulty": 4,
+  "category": "JOIN",
+  "question": "全ユーザーの名前と部署名を、部署名の昇順で、同じ部署内ではユーザー名の昇順に並べて取得してください。",
+  "schema": [
+    "CREATE TABLE departments(id INTEGER, name TEXT);",
+    "CREATE TABLE users(id INTEGER, name TEXT, age INTEGER, dept_id INTEGER);"
+  ],
+  "seed": [
+    "INSERT INTO departments VALUES(1,'Sales');",
+    "INSERT INTO departments VALUES(2,'Engineering');",
+    "INSERT INTO departments VALUES(3,'Marketing');",
+    "INSERT INTO users VALUES(1,'Alice',22,1);",
+    "INSERT INTO users VALUES(2,'Bob',18,1);",
+    "INSERT INTO users VALUES(3,'Carol',35,2);",
+    "INSERT INTO users VALUES(4,'Dave',28,2);",
+    "INSERT INTO users VALUES(5,'Eve',41,3);",
+    "INSERT INTO users VALUES(6,'Frank',19,3);"
+  ],
+  "expectedResult": [
+    { "user_name": "Carol", "dept_name": "Engineering" },
+    { "user_name": "Dave", "dept_name": "Engineering" },
+    { "user_name": "Eve", "dept_name": "Marketing" },
+    { "user_name": "Frank", "dept_name": "Marketing" },
+    { "user_name": "Alice", "dept_name": "Sales" },
+    { "user_name": "Bob", "dept_name": "Sales" }
+  ],
+  "hint": ["JOINとORDER BYを組み合わせます。", "複数列を指定すると、最初の列が同じ場合に次の列で並べ替えます。"],
+  "answerQuery": "SELECT users.name, departments.name FROM users JOIN departments ON users.dept_id = departments.id ORDER BY departments.name ASC, users.name ASC;",
+  "orderMatters": true
+}
